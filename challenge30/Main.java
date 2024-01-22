@@ -1,7 +1,3 @@
-/* 
-Ik weet niet hoe ik deze opdracht moet oplossen, het lijkt erop dat de kaarten in de deck naar dezelfde kaart verwijzen
-Maar volgens mij maak ik een nieuw object aan voor elke kaart. 
-*/
 public class Main{
 	//enums
 	enum CardColor{
@@ -33,16 +29,9 @@ public class Main{
 		
 		for(CardColor color: CardColor.values()){
 			for(CardRanks rank : CardRanks.values()){
-				System.out.println("counter = " + counter + " rank: " + rank.toString() + " color: " + color);	//debug statements
 				deck[counter++] = new Card(color.toString(),rank.toString());
 				System.out.println("The card: " + deck[counter-1].toString());	//debug statements
 			}
-		}
-		deck[0] = new Card("red", "three");	//debug statements
-		deck[1] = new Card("blue", "five");	//debug statements
-		System.out.println("-------------------------------------");
-		for(Card card : deck){
-			System.out.println(card.toString());	//debug statements
 		}
 	}
 }
