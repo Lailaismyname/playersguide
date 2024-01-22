@@ -1,7 +1,7 @@
 public class Card{
 	// variables
-	private static String color;
-	private static String rank;
+	private String color;
+	private String rank;
 	// constructors
 	public Card(String color, String rank){
 		this.color = color;
