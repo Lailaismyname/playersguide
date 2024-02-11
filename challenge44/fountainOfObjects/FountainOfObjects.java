@@ -3,6 +3,8 @@
 * Rommel opruimen
 * kijken of die if/else beter kunnen
 * checken of movePlayer nog werkt met grotere grid.
+* als er north west of south east word ingevoerd door gebruiker wat gebeurt er dan? 
+* Zorgen dat een gebruiker opnieuw geprompt word in dat geval
 */
 
 package fountainOfObjects;
