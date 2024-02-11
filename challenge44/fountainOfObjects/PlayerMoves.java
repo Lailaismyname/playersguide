@@ -1,4 +1,4 @@
-public Enum PlayerMoves{
+public enum PlayerMoves{
 	NORTH,
 	SOUTH,
 	EAST,
