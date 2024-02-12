@@ -27,8 +27,8 @@ class WorldMap{
 		int column = getRandomRoomNumber(gridColumns - 1); 
 		worldMap[row][column] = "fountain"; 
 		// set the row and column of fountain for later reference
-		fountainRow = row;
-		fountainColumn = column;
+		this.fountainRow = row;
+		this.fountainColumn = column;
 	}
 
 	
@@ -58,10 +58,10 @@ class WorldMap{
 	
 	
 	public int getFountainRoomRow(){
-		return fountainRow;
+		return this.fountainRow;
 	}
 	public int getFountainRoomColumn(){
-		return fountainColumn;
+		return this.fountainColumn;
 	}
 	
 }

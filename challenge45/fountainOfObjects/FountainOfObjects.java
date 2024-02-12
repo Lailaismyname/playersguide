@@ -15,17 +15,17 @@ public class FountainOfObjects{
 	
 	int fountainRow;
 	int fountainColumn;
-	public FountainOfObjects(int gridSize){
-		this.gridSize = gridSize;
+	public FountainOfObjects(){
+		gridSize = getGameSize();
 		worldMap = new WorldMap(gridSize);
 		playersCurrentLocation = new PlayerLocation(0,0,gridSize);
 	}
 	// color pallete 2: 70's vibe
-	final static String ANSI_BROWN = new TerminalColor(129,52,5).toString(); 
-	final static String ANSI_SYRACUSE = new TerminalColor(212,81,19).toString();
-	final static String ANSI_CARROT = new TerminalColor(249,160,63).toString();
-	final static String ANSI_PEACHYELLOW = new TerminalColor(248,221,164).toString();
-	final static String ANSI_TEAGREEN = new TerminalColor(221,249,193).toString();
+	final String ANSI_BROWN = new TerminalColor(129,52,5).toString(); 
+	final String ANSI_SYRACUSE = new TerminalColor(212,81,19).toString();
+	final String ANSI_CARROT = new TerminalColor(249,160,63).toString();
+	final String ANSI_PEACHYELLOW = new TerminalColor(248,221,164).toString();
+	final String ANSI_TEAGREEN = new TerminalColor(221,249,193).toString();
 	// reset color
 	final String ANSI_RESET = TerminalColor.getResetColor();
 	
@@ -142,6 +142,27 @@ public class FountainOfObjects{
 		if(playersCurrentLocation.getRow() == 0 && playersCurrentLocation.getColumn() == 0 && isFountainActivated){
 			System.out.println(ANSI_SYRACUSE + "You have activated the fountain and succesfully found your way back through the darkness." + ANSI_RESET);
 			isGameFinished = true;
+		}
+	}
+	
+	
+	private int getGameSize(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println(ANSI_PEACHYELLOW + "Would you like to play a small, medium or large game?" + ANSI_RESET);
+		ArrayList<String> options = new ArrayList<>(List.of("small","medium","large"));
+		String gameSize = "";
+		do{
+			gameSize = sc.nextLine();
+		}while(!options.contains(gameSize));
+		switch (gameSize){
+			case "small":
+				return 4;
+			case "medium":
+				return 6;
+			case "large":
+				return 8;
+			default:
+				return 4;
 		}
 	}
 		
