@@ -1,5 +1,5 @@
 package fountainOfObjects;
-import java.lang.Math;
+import java.util.Random;
 
 
 class WorldMap{
@@ -10,10 +10,9 @@ class WorldMap{
 	int fountainColumn;
 	
 	
-	public WorldMap(int gridRows, int gridColumns){
-		// substracting one, because count starts at 0
-		this.gridRows = gridRows;
-		this.gridColumns = gridColumns;
+	public WorldMap(int gridSize){
+		this.gridRows = gridSize;
+		this.gridColumns = gridSize;
 		// create the world
 		worldMap = new String[gridRows][gridColumns];
 		for(int row = 0; row < gridRows; row++){
@@ -24,12 +23,8 @@ class WorldMap{
 		// set the entrance
 		worldMap[0][0] = "entry";
 		// set the fountain room
-			// random fountain room location
-		int row = getRandomRoomNumber(1, gridRows);
-		int column = getRandomRoomNumber(1, gridColumns); 
-			// ff vaste locatie om te testen nog
-		//int row = 0;
-		//int column = 2; 
+		int row = getRandomRoomNumber(gridRows - 1);
+		int column = getRandomRoomNumber(gridColumns - 1); 
 		worldMap[row][column] = "fountain"; 
 		// set the row and column of fountain for later reference
 		this.fountainRow = row;
@@ -56,9 +51,9 @@ class WorldMap{
 	}
 	
 	
-	private int getRandomRoomNumber(int min, int max){
-		int range = max - min + 1;
-		return (int)(Math.random() * range) + min;
+	private int getRandomRoomNumber(int max){
+		Random random = new Random();
+		return random.nextInt(1,max);
 	}
 	
 	

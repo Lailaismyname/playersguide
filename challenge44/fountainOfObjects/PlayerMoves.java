@@ -1,6 +1,10 @@
+package fountainOfObjects;
+
 public enum PlayerMoves{
 	NORTH,
 	SOUTH,
 	EAST,
-	WEST
+	WEST,
+	ACTIVATE_FOUNTAIN,
+	DEACTIVATE_FOUNTAIN
 }
