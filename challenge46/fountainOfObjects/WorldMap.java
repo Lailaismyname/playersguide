@@ -1,6 +1,7 @@
 package fountainOfObjects;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class WorldMap{
@@ -27,36 +28,64 @@ class WorldMap{
 				worldMap[row][column] = "";
 			}
 		}
-		
+		// set the adjacent rooms
 		adjacentRoomsMap = new String[gridSize][gridSize];
 		for(int row = 0; row < gridSize; row++){
 			for(int column = 0; column < gridSize; column++){
-				worldMap[row][column] = "";
+				adjacentRoomsMap[row][column] = "";
 			}
 		}
 	}
 
 	
 	public String getRoomInfo(int row, int column, boolean isFountainActivated){	
-		String activeFountain = "You hear the rushing waters from the Fountain of objects";
-		String inactiveFountain = "You hear water dripping in this room. The fountain is here!";
-		String entrance = "You see light coming from the temple entrance, but you must first activate the fountain. Be carefull weary traveler darkness awaits you!";
-		String exit = "The fountain has been reactivated and you have survived this ordeal and escaped with your life still intact. You are now a winner!";
-		String pit = "You fell into a pit with sharp spikes, you see the light and slowly fall into darkness";
-		String adjacentOfPit = "You sense an eerie draft, there is a pit in a nearby room";
+		final String activeFountain = "You hear the rushing waters from the Fountain of objects.";
+		final String inactiveFountain = "You hear water dripping in this room. The fountain is here!";
+		final String entrance = "You see light coming from the temple entrance, but you must first activate the fountain. Be carefull weary traveler darkness awaits you!";
+		final String exit = "The fountain has been reactivated and you have survived this ordeal and escaped with your life still intact. You are now a winner!";
+		final String pit = "You fell into a pit with sharp spikes, you see the light and slowly fall into darkness.";
+		final String adjacentOfPit = "You sense an eerie draft, there is a pit in a nearby room.";
+		final String maelstrom = "You got sweeped up by maelstroms wind and relocated.";
+		final String adjacentOfMaelstrom = "You can hear growling and groaning from a neighbouring room.";  
+		final String amaroks = "You died, oh well...";
+		final String adjacentOfAmaroks = "You can smell the rotten stench of an amarok in a nearby room.";
 		
+		String finalRoomInfo = "";
+		// getting the text for the rooms
 		switch (worldMap[row][column]) {
 			case "entry":
-				return isFountainActivated ? exit : entrance;
+				finalRoomInfo = isFountainActivated ? exit : entrance;
+				break;
 			case "fountain":
-				return isFountainActivated ? activeFountain : inactiveFountain;
+				finalRoomInfo = isFountainActivated ? activeFountain : inactiveFountain;
+				break;
 			case "pit":
-				return pit;
-			case "adjacentOfpit":
-				return adjacentOfPit;
+				finalRoomInfo = pit;
+				break;
+			case "maelstrom":
+				finalRoomInfo = maelstrom;
+				break;
+			case "amaroks":
+				finalRoomInfo = amaroks;
+				break;
 			default:
-				return "";
+				break;
 		}
+		// getting the text for the adjacent rooms
+			switch (adjacentRoomsMap[row][column]){
+				case "adjacentOfPit":
+					finalRoomInfo += " " + adjacentOfPit;
+					break;
+				case "adjacentOfMaelstrom":
+					finalRoomInfo += "" + adjacentOfMaelstrom;
+					break;
+				case "adjacentOfAmaroks":
+					finalRoomInfo += " " + adjacentOfAmaroks;
+					break;
+				default:
+					break;
+			}
+		return finalRoomInfo;
 	}
 	
 	
@@ -80,27 +109,23 @@ class WorldMap{
 					fountainColumn = column;
 					break;
 				case "pit": 
-					fountainRow = row;
-					fountainColumn = column;
+					pitRow = row;
+					pitColumn = column;
 					break;
 				case "amarokt": 
-					fountainRow = row;
-					fountainColumn = column;
+					amaroktRow = row;
+					amaroktColumn = column;
 					break;
 				case "maelstrom": 
-					fountainRow = row;
-					fountainColumn = column;
+					maelstromRow = row;
+					maelstromColumn = column;
 					break;
 				default:
 					break;
 			}
-		// TODO set the rooms adjacent rooms. Deze moeten apart want ze kunnen overlappen met de andere rooms zoals fountain e.d.
-			// dan ook de gethint method aanpassen dat ie dus 2 hints ophaalt. 
-		ArrayList<String> adjacentRooms = new ArrayList<>(List.of("pit","amarokt","maelstrom"));
-		
-		
 		}
-		
+		// set pits
+		setAdjacentRooms(pitRow, pitColumn, "adjacentOfPit");		
 		// print worldMap for debugging
 		for(int i = 0; i < gridSize; i++){
 			for(int j = 0; j < gridSize; j++){
@@ -112,17 +137,44 @@ class WorldMap{
 	
 	
 	public boolean isRoomEmpty(int row, int column){
-		if(worldMap[row][column].equals("")){
-			return false;
-		}else{
-			return true;
-		}
+		return !worldMap[row][column].equals("");
 	}
 	
 	public void assignRoom(String roomItem, int row,int column){
 		worldMap[row][column] = roomItem;
 	}
 	
+	
+	public void setAdjacentRooms(int row, int col, String nameOfAdjacentRoom){
+		int[][] rowsAndColumns = {
+			// deze klopt niet want pit word niet op juiste plek geprint
+			{row - 1, col - 1}, // deze is goed
+			{row, col - 1}, // deze is goed
+			{row + 1, col - 1}, // deze is goed
+			{row - 1, col},
+			{row + 1, col},
+			{row - 1, col + 1},
+			{row, col + 1},
+			{row + 1, col + 1}
+						
+		};
+		for(int i = 0; i < 8; i++){
+			if(rowsAndColumns[i][0] > 0 || rowsAndColumns[i][1] < 8){
+				adjacentRoomsMap[rowsAndColumns[i][0] ] [rowsAndColumns[i][1] ] = nameOfAdjacentRoom;
+			}
+		}	
+		// debugging	
+		System.out.println("row: " + row + " col: " + col);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		for(int i = 0; i < gridSize; i++){
+			for(int j = 0; j < gridSize; j++){
+				System.out.print(adjacentRoomsMap[i][j] + " - ");
+			}
+			System.out.println();
+		}
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		
+	}
 	
 	private int getRandomRoomNumber(int max){
 		Random random = new Random();

@@ -1,6 +1,7 @@
 /* TODO 
 * rooms adjacent van pit en amarokt plaatsen
 * game stoppen als speler in de pit valt
+* als de map groter is wilt ie meer pits and maelstroms ook!
 */
 package fountainOfObjects;
 import java.util.HashMap;
