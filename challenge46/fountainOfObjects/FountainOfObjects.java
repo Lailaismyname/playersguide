@@ -1,7 +1,6 @@
 /* TODO 
-* rooms adjacent van pit en amarokt plaatsen
-* game stoppen als speler in de pit valt
-* als de map groter is wilt ie meer pits and maelstroms ook!
+* help functie toevoegen, en arrow functionaliteit maken
+* 
 */
 package fountainOfObjects;
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.List;
 public class FountainOfObjects{	
 	private final int gridSize;
 	WorldMap worldMap;
-	PlayerLocation playersCurrentLocation;
+	Location playersCurrentLocation;
 	
 	int fountainRow;
 	int fountainColumn;
@@ -20,7 +19,7 @@ public class FountainOfObjects{
 		gridSize = getGameSize();
 		worldMap = new WorldMap(gridSize);
 		worldMap.setRooms();
-		playersCurrentLocation = new PlayerLocation(0,0,gridSize);
+		playersCurrentLocation = new Location(0,0,gridSize);
 	}
 	// color pallete 2: 70's vibe
 	final String ANSI_BROWN = new TerminalColor(129,52,5).toString(); 
@@ -33,30 +32,37 @@ public class FountainOfObjects{
 	
 	Scanner sc = new Scanner(System.in);
 	boolean isGameFinished = false;
-	boolean isFountainActivated = false;
-	
-	
-	int invalidMoveCounter = 0;
-	
-	
-	
+	boolean isFountainActivated = false;	
 	
 	// games main function
-	public void play(){		
-		AsciiArt temple = new AsciiArt();
-		temple.printGameTitle(ANSI_TEAGREEN, ANSI_RESET);
-		DadJoke dadJoke = new DadJoke();
+	public void play(){	
+		// print worldMap for debugging
+		for(int i = 0; i < gridSize; i++){
+			for(int j = 0; j < gridSize; j++){
+				System.out.print("|");
+				System.out.print(worldMap.worldMap[i][j]);
+				System.out.print("|");
+			}
+			System.out.println("----------------------------------------------------");
+		}
+		// einde debug statements
+		
+		AsciiArt titleScreen = new AsciiArt();
+		titleScreen.printGameTitle(ANSI_TEAGREEN, ANSI_RESET);
 		do{
 			System.out.println(ANSI_BROWN + "You are in the room at " + playersCurrentLocation.toString() + ANSI_RESET);
 			giveHint();
 			if(!movePlayer(getNextPlayerMove())){
 				System.out.println(ANSI_TEAGREEN + "You bang your head against the wall, there doesnt seem to be a door there!" + ANSI_RESET);
-				invalidMoveCounter++;
-				if(invalidMoveCounter > 2){
-					System.out.println(ANSI_TEAGREEN + dadJoke.getDadJoke() + ANSI_RESET);
-				}
 			}
-		checkForWin();
+			if(worldMap.isEvent(playersCurrentLocation.getRow(),playersCurrentLocation.getColumn()).equals("pit") || worldMap.isEvent(playersCurrentLocation.getRow(),playersCurrentLocation.getColumn()).equals("amarokt")){
+				System.out.println(ANSI_TEAGREEN + "You died, GAME OVER!" + ANSI_RESET);
+				System.exit(0);
+			}else if(worldMap.isEvent(playersCurrentLocation.getRow(),playersCurrentLocation.getColumn()).equals("maelstrom")){
+				worldMap.relocateMaelstrom(playersCurrentLocation.getRow(),playersCurrentLocation.getColumn());
+				relocatePlayer();
+			}
+			checkForWin();
 		}while(!isGameFinished);
 	}
 	
@@ -68,24 +74,23 @@ public class FountainOfObjects{
 		String nextPlayerMove = "";
 		do{
 			nextPlayerMove = sc.nextLine().toLowerCase();
-			String[] commandList = nextPlayerMove.split(" ");				
-				ArrayList<String> validCommands = new ArrayList<>(List.of("north", "south", "west", "east", "activate", "deactivate", "fountain"));
-					String selectedCommand = "";
-					for(String command : commandList){
-						if(validCommands.contains(command)){
-							selectedCommand += command;
-						}
-					}
+			String command = nextPlayerMove.replace(" ","");				
+				ArrayList<String> validCommands = new ArrayList<>(List.of("movenorth", "movesouth", "movewest", "moveeast", "activate", "deactivate", "fountain", "shootnorth","shooteast","shootwest","shootsouth"));
 					
-					switch(selectedCommand){
-						case "north":
-						case "west":
-						case "south":
-						case "east":
+					switch(command){
+						case "movenorth":
+						case "movewest":
+						case "movesouth":
+						case "moveeast":
 						case "activatefountain":
 						case "deactivatefountain":
+						case "help":
+						case "shootnorth":
+						case "shootwest":
+						case "shooteast":
+						case "shootsouth":
 							isSelectionValid = true;
-							nextPlayerMove = selectedCommand;
+							nextPlayerMove = command;
 							break;
 						default:
 							isSelectionValid = false;
@@ -97,6 +102,19 @@ public class FountainOfObjects{
 		return nextPlayerMove;
 	}
 	
+	private void relocatePlayer(){
+		// move is out of bounds then go to outer
+		if(playersCurrentLocation.getRow() - 1 < 0){
+			playersCurrentLocation.setRow(0);
+		}else{
+			playersCurrentLocation.setRow(playersCurrentLocation.getRow() - 1);
+		}
+		if(playersCurrentLocation.getColumn() + 2 > (gridSize - 1)|| playersCurrentLocation.getColumn() + 1 > (gridSize - 1)){
+			playersCurrentLocation.setColumn(gridSize -1);
+		}else{
+			playersCurrentLocation.setColumn(playersCurrentLocation.getColumn() - 1);
+		}
+	}
 	
 	// method to display hint to player
 	private void giveHint(){
@@ -109,25 +127,42 @@ public class FountainOfObjects{
 	
 	// method to move the player, returns true if move is made and false if not possible
 	private boolean movePlayer(String move){
+		int row = playersCurrentLocation.getRow();
+		int col = playersCurrentLocation.getColumn();
 		try{
 			switch (move){
-				case "north":
-					playersCurrentLocation.setRow(playersCurrentLocation.getRow() - 1);
+				case "movenorth":
+					playersCurrentLocation.setRow(row - 1);
 					break;
-				case "south":
-					playersCurrentLocation.setRow(playersCurrentLocation.getRow() + 1);
+				case "movesouth":
+					playersCurrentLocation.setRow(row + 1);
 					break;
-				case "west":
-					playersCurrentLocation.setColumn(playersCurrentLocation.getColumn() - 1);
+				case "moveewest":
+					playersCurrentLocation.setColumn(col - 1);
 					break;
-				case "east":
-					playersCurrentLocation.setColumn(playersCurrentLocation.getColumn() + 1);
+				case "moveeast":
+					playersCurrentLocation.setColumn(col + 1);
 					break;
 				case "activatefountain":
 					isFountainActivated = true;
 					break;
 				case "deactivatefountain":
 					isFountainActivated = false;
+					break;
+				case "help":
+					printHelpMenu();
+					break;
+				case "shootnorth":
+					worldMap.shootArrow("north",row,col);
+					break;
+				case "shooteast":
+					worldMap.shootArrow("east",row,col);
+					break;
+				case "shootwest":
+					worldMap.shootArrow("west",row,col);
+					break;
+				case "shootsouth":
+					worldMap.shootArrow("south",row,col);
 					break;
 				default: 
 					System.out.println("Oops something went wrong");
@@ -139,6 +174,16 @@ public class FountainOfObjects{
 		}
 	}
 	
+	private void printHelpMenu(){
+		System.out.println("To move in a direction by type north, south, east or west");
+		System.out.println("To shoot an Arrow type shoot and add a direction ");
+		System.out.println("To activate the fountain type 'Activate fountain'.");
+		System.out.println("To Deactivate the fountain type 'Deactivate fountain'.");		
+	}
+	
+	private void printIntroductoryText(){
+		System.out.println("PRINT INTRODUCTORY TEXT HERE, FORGET ME NOT!!");
+	}
 	
 	private void checkForWin(){
 		if(playersCurrentLocation.getRow() == 0 && playersCurrentLocation.getColumn() == 0 && isFountainActivated){

@@ -1,11 +1,11 @@
 package fountainOfObjects;
 
-class PlayerLocation{
+class Location{
 	private int row;
 	private int column;
 	private int gridSize;
 	
-	public PlayerLocation(int row, int column, int gridSize){
+	public Location(int row, int column, int gridSize){
 		this.row = row;
 		this.column = column;
 		this.gridSize = (gridSize - 1); // subtracting 1 because arr start at 0
