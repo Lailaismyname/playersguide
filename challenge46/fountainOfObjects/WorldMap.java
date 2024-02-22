@@ -111,22 +111,33 @@ class WorldMap{
 	
 	
 	public void shootArrow(String direction, int row, int col){
-		// shoot the maelstrom or amarokt
 		switch(direction){
 			case "north":
-				System.out.println(worldMap[row + 1][col].split(","));
+				row += 1;
 				break;
 			case "south":
+				row -= 1;
 				break;
 			case "east":
+				col += 1;
 				break;
 			case "west":
+				col -= 1;
 				break;
 			default:
 				System.out.println("You can't shoot that way");
 		}
-		System.out.println("Shooting arrow in direction: " + direction);
+		
+		// shoot the maelstrom or amarokt
+		if(worldMap[row][col].contains("amarokt")){
+			worldMap[row][col].replace("amarokt","");
+		} else if(worldMap[row][col].contains("maelstrom")){
+			worldMap[row][col].replace("maelstrom","");
+		}	
+		
+		System.out.println(worldMap[row][col].contains("amarokt"));
 	}
+	
 	
 	public boolean isRoomEmpty(int row, int column){
 		return !worldMap[row][column].equals("");
