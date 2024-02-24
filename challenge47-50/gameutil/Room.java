@@ -9,6 +9,11 @@ class Room{
 		this.description = description;
 	}
 	
+	public Room(String name){
+		this.name = name;
+		this.description = "";
+	}
+	
 	public Room(){
 		this.name = "Empty";
 	}
@@ -25,6 +30,7 @@ class Room{
 	
 	@Override
 	public String toString(){
-		return "Name:" + name + " Description: " + description;
+		// return "Name:" + name + " Description: " + description;
+		return name;
 	}
 }

@@ -1,11 +1,32 @@
 package gameutil;
 
 class Fountain extends Room{
-	boolean isActivated = false;
+	private boolean isActivated = false;
 	String name;
-	String description = isActivated? "activated" : "deactivated";
+	String description = "";
 	
 	public Fountain(){
-		super("fountain", "you hear water dripping");
+		super("fountain");
+	}
+	
+	
+	public void activateFountain(){
+		isActivated = true;
+	}
+	
+	
+	public void deActivateFountain(){
+		isActivated = false;
+	}
+	
+	
+	public boolean getFountainStatus(){
+		return this.isActivated;
+	}
+	
+	
+	@Override
+	public String getDescription() {
+		return description = isActivated? "You hear rushing water" : "You hear water dripping";
 	}
 }

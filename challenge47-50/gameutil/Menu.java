@@ -3,10 +3,12 @@ import java.util.Scanner;
 
 class Menu{
 	Scanner sc = new Scanner(System.in);
+	TerminalColor pink = new TerminalColor(219,127,142);
+	TerminalColor teaRose = new TerminalColor(239,199,194);
 	
 	// method to ask the user what size of game they want to have
 	public int getGameSize(){
-		System.out.println("Would you like to play a small, medium or large game?");
+		System.out.println(teaRose + "Would you like to play a small, medium or large game?" + pink);
 		String size = "";
 		do {
 			size = sc.nextLine();
@@ -22,6 +24,7 @@ class Menu{
 	
 	// method that prints out an introductory text
 	public void printIntroTxt(){
+		System.out.print(teaRose);
 		System.out.println("""
 		You enter the Cavern of Objects, a maze of rooms filled with dangerous pits in search of the Fountain of Objects.
 		Light is visible only in the entrance, and no other light is seen anywhere in the caverns.
