@@ -79,7 +79,7 @@ public class Game{
 			System.out.println(ashGrey + "You win!" + teaRose); 
 			isGameOver = true;
 		}else if (room.equalsIgnoreCase("amarok") || room.equalsIgnoreCase("pit")){
-			//isGameOver = true;
+			isGameOver = true;
 		}else if (room.equalsIgnoreCase("maelstrom")){
 			isPlayerInFountainRoom = false;
 			// move player according to rules and within bounds
