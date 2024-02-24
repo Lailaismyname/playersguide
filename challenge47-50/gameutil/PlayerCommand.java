@@ -48,6 +48,9 @@ class PlayerCommand{
 					move = "deactivateFountain";
 				}
 				break;
+			}else if (move.contains("help")){
+				move = "help";
+				break;
 			}
 		}while(true);
 		

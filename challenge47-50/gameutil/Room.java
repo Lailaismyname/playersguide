@@ -3,10 +3,17 @@ package gameutil;
 class Room{
 	private String name;
 	private String description;
+	private String adjacentTxt;
 	
+	public Room(String name, String description, String adjacentTxt){
+		this.name = name;
+		this.description = description;
+		this.adjacentTxt = adjacentTxt;
+	}
 	public Room(String name, String description){
 		this.name = name;
 		this.description = description;
+		this.adjacentTxt= "";
 	}
 	
 	public Room(String name){
@@ -27,6 +34,12 @@ class Room{
 	public String getDescription() {
 		return description;
 	}
+	
+	
+	public String getAdjacentTxt() {
+		return adjacentTxt;
+	}
+	
 	
 	@Override
 	public String toString(){

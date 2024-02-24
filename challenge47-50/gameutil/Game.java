@@ -1,10 +1,3 @@
-/* TODO
-* ik kan de playerLocation.getRow() & getColumn vervangen voor get location en gewoon int[][] retourneren
-* functionaliteit maelstrom maken
-* arrow en functionaliteit voor doden van monsters
-* functionaliteit voor help
-*/
-
 package gameutil;
 // import helperclasses.TerminalColor; 			// ff uitvogelen hoe die classpath werkt
 
@@ -44,13 +37,19 @@ public class Game{
 		setUpGame();
 		do{
 			System.out.println(eggPlant + "You are currently at Row: " + playerLocation.getRow() + " Column: " + playerLocation.getColumn() + teaRose);
+			String hint = worldmap.getAdjacentRooms(playerLocation.getRow(),playerLocation.getColumn());
+			if(!hint.equalsIgnoreCase("")){
+				System.out.println(ashGrey + hint + teaRose);
+			}
 			// check if move is within valid, if it is then move player
 			do {
 				selectedMove = command.getPlayerMove();
 			}while (!isMoveValid(selectedMove));
 			movePlayer(playerLocation.getRow(), playerLocation.getColumn(), selectedMove);
 			roomInfo = worldmap.getRoomDescription(playerLocation.getRow(),playerLocation.getColumn());
-			System.out.println(CambridgeBlue + roomInfo + teaRose);
+			if(roomInfo.length() > 5){
+				System.out.println(CambridgeBlue + roomInfo + teaRose);
+			}
 			if (isEvent()){
 				handleEvent();
 			}
@@ -83,18 +82,14 @@ public class Game{
 			//isGameOver = true;
 		}else if (room.equalsIgnoreCase("maelstrom")){
 			isPlayerInFountainRoom = false;
-			worldmap.moveMaelstrom(playerLocation.getRow(),playerLocation.getColumn());
 			// move player according to rules and within bounds
-				// player moves 1 space north and 2 spaces east
-				// DEZE KLOPT NIET ALTIJD!!
-				int newRow = (playerLocation.getRow() - 1) < 0 ? size - (playerLocation.getRow() - 1) : (playerLocation.getRow() - 1);
-				int newCol = (playerLocation.getColumn() + 2) > size ? size - (playerLocation.getColumn() + 2) : (playerLocation.getColumn() + 2);
-				// ------------------------------------------
-				playerLocation.setRow(newRow);
-				playerLocation.setColumn(newCol);
-				// maelstrom moves 1 space south and 2 spaces west
-					// ---- deze nog fixen staat een method klaar in map!
-				// moveMaelstrom(int row, int col)
+			// maelstrom moves 1 space south and 2 spaces west
+			worldmap.moveMaelstrom(playerLocation.getRow(), playerLocation.getColumn());
+			// player moves 1 space north and 2 spaces east
+			int newRow = (playerLocation.getRow() - 1) < 0 ? size - (playerLocation.getRow() - 1) : (playerLocation.getRow() - 1);
+			int newCol = (playerLocation.getColumn() + 1) >= size ? size - (playerLocation.getColumn() + 1) : (playerLocation.getColumn() + 1);
+			playerLocation.setRow(newRow);
+			playerLocation.setColumn(newCol);
 		}else if (room.equalsIgnoreCase("fountain")){
 			isPlayerInFountainRoom = true;
 		} else{
@@ -113,6 +108,11 @@ public class Game{
 		}else if (playerCommand.equalsIgnoreCase("moveWest")){
 			return (playerLocation.getColumn() - 1) >= 0 && (playerLocation.getColumn() - 1) < size;
 		}else if (playerCommand.equalsIgnoreCase("activateFountain") || playerCommand.equalsIgnoreCase("deActivateFountain")){
+			return true;
+		}else if(playerCommand.equalsIgnoreCase("help")){
+			return true;
+		}else if (playerCommand.equalsIgnoreCase("shootNorth") || playerCommand.equalsIgnoreCase("shootSouth") ||
+			playerCommand.equalsIgnoreCase("shootEast") || playerCommand.equalsIgnoreCase("shootWest")){
 			return true;
 		}else {
 			return false;
@@ -133,6 +133,11 @@ public class Game{
 			worldmap.activateFountain();
 		}else if (playerCommand.equalsIgnoreCase("deActivateFountain") && isPlayerInFountainRoom){
 			worldmap.deActivateFountain();
+		}else if(playerCommand.equalsIgnoreCase("help")){
+			menu.getHelp();
+		}else if (playerCommand.equalsIgnoreCase("shootNorth") || playerCommand.equalsIgnoreCase("shootSouth") ||
+			playerCommand.equalsIgnoreCase("shootEast") || playerCommand.equalsIgnoreCase("shootWest")){
+			worldmap.shootMonster(playerLocation.getRow(), playerLocation.getColumn(), playerCommand);
 		}
 	}
 	

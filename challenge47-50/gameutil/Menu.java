@@ -5,6 +5,7 @@ class Menu{
 	Scanner sc = new Scanner(System.in);
 	TerminalColor pink = new TerminalColor(219,127,142);
 	TerminalColor teaRose = new TerminalColor(239,199,194);
+	TerminalColor eggPlant = new TerminalColor(105,79,93);
 	
 	// method to ask the user what size of game they want to have
 	public int getGameSize(){
@@ -39,9 +40,30 @@ class Menu{
 		""");
 	}
 	
-	// method that explains how the game works
+	// method that prints out a list of available commands
 	public void getHelp(){
-		
+		System.out.print(eggPlant);
+		System.out.println("""
+		______________________
+		|List of commands:   |
+		|                    | 
+		|move north          |
+		|move west           |
+		|move south          |
+		|move east           |
+		|                    |    
+		|shoot north         |
+		|shoot west          |
+		|shoot south         |
+		|shoot east          |
+		|                    |
+		|active fountain     |
+		|deactivate fountain |
+		|                    |
+		|help                |
+		|____________________|
+		""");
+		System.out.print(teaRose);
 	}
 	
 }
