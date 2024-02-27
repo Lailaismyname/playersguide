@@ -1,5 +1,7 @@
-package challenge50.gameutil;
-import helperclasses.TerminalColor;
+package challenge52.gameutil;
+import helperclasses.TerminalColor; 	
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Game{
 	// colors 
@@ -19,6 +21,7 @@ public class Game{
 	String selectedMove = "";
 	boolean isGameOver = false;
 	boolean isPlayerInFountainRoom = false;
+	LocalTime time = LocalTime.now();
 	
 	// intialise with a terminal color
 	{
@@ -34,6 +37,9 @@ public class Game{
 	
 	
 	public void play(){
+		// to do pak start tijd, eindtijd en bereken tijd die verstreken
+		
+		System.out.print(getTime());
 		setUpGame();
 		do{
 			System.out.println(eggPlant + "You are currently at Row: " + playerLocation.getRow() + " Column: " + playerLocation.getColumn() + teaRose);
@@ -54,7 +60,15 @@ public class Game{
 				handleEvent();
 			}
 		}while (!isGameOver);
-		
+		System.out.println(getTime());
+	}
+	
+	
+	public String getTime(){
+		DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+		time = LocalTime.now();
+		String formattedTime = time.format(formatTime);
+		return formattedTime;
 	}
 	
 	public void setUpGame(){
