@@ -1,4 +1,4 @@
-package gameutil;
+package challenge50.gameutil;
 
 class Event{
 	final private String name;

@@ -1,5 +1,6 @@
-package gameutil;
+package challenge50.gameutil;
 import java.util.Scanner;
+import helperclasses.TerminalColor;
 
 class Menu{
 	Scanner sc = new Scanner(System.in);

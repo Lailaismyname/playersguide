@@ -1,5 +1,5 @@
-package gameutil;
-// import helperclasses.TerminalColor; 			// ff uitvogelen hoe die classpath werkt
+package challenge50.gameutil;
+import helperclasses.TerminalColor; 			// ff uitvogelen hoe die classpath werkt
 
 public class Game{
 	// colors 
@@ -41,7 +41,7 @@ public class Game{
 			if(!hint.equalsIgnoreCase("")){
 				System.out.println(ashGrey + hint + teaRose);
 			}
-			// check if move is within valid, if it is then move player
+			// check if move is valid, if it is then move player
 			do {
 				selectedMove = command.getPlayerMove();
 			}while (!isMoveValid(selectedMove));

@@ -1,4 +1,4 @@
-package gameutil;
+package challenge50.gameutil;
 
 class Coordinate{
 	private int row;

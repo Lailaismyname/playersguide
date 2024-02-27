@@ -1,6 +1,7 @@
-package gameutil;
+package challenge50.gameutil;
 import java.util.Random;
 import java.util.ArrayList;
+import helperclasses.TerminalColor;
 
 class Map{
 	TerminalColor teaRose = new TerminalColor(239,199,194);

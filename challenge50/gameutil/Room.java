@@ -1,4 +1,4 @@
-package gameutil;
+package challenge50.gameutil;
 
 class Room{
 	private String name;

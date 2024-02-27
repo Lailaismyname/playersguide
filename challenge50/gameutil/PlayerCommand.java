@@ -1,4 +1,5 @@
-package gameutil;
+package challenge50.gameutil;
+import helperclasses.TerminalColor;
 import java.util.Scanner;
 
 class PlayerCommand{
