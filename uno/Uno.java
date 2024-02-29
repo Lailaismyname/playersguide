@@ -1,3 +1,7 @@
+/* TODO/TONOTFORGET
+- als een speler geen kaart heeft om te spelen dan moet hij een kaart van de draw pile pakken. 
+*/
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -5,16 +9,17 @@ public class Uno{
 	Scanner sc = new Scanner(System.in);
 	Deck deck = new Deck(true); 
 	DiscardPile discardPile = new DiscardPile(); 
-	Card topOfDiscardPile = discardPile.getCardFromDeck(0);
+	Card topOfDiscardPile;
 	ArrayList<Player> players = new ArrayList<Player>();
 	int playerAmount = 2;
+	int turnsPlayed = 0;
+	
 	public void play(){
 		playerAmount = getAmountOfPlayers();
 		setPlayers(playerAmount);
 		dealCards();
 		discardPile.addCardToDeck(deck.getCardFromDeck());
-		System.out.println(topOfDiscardPile);
-		
+		topOfDiscardPile = discardPile.getCardFromDeck(turnsPlayed);		
 		// main game loop
 		playRound();
 	}
@@ -23,7 +28,7 @@ public class Uno{
 	public void setPlayers(int amount){
 		String name = "";
 		for(int i = 0; i < amount; i++){
-			System.out.print("Player " + (i+1) + " enter your name:");
+			System.out.print("Player " + ( i + 1 ) + " enter your name:");
 			name = sc.nextLine();
 			players.add(new Player(name));
 		}
@@ -48,34 +53,65 @@ public class Uno{
 	}
 	
 	
-	public void playRound(){
-		for(Player player: players){
-			handlePlayerTurn(player);
+	public void clearScreen(){
+		for(int i = 0; i < 50; i++){
+			System.out.println();
 		}
 	}
 	
+	public void playRound(){
+		for(Player player: players){
+			System.out.println("Top card of Discard pile: " + topOfDiscardPile);
+			System.out.println("|" + player + " it's your turn, which card do you want to play?" + "|");
+			printPlayersCards(player);
+			handlePlayerTurn(player);
+			clearScreen();
+		}
+	}
 	
-	public void handlePlayerTurn(Player player){ 
-		System.out.println(player + " it's your turn, which card do you want to play?");
+	public void printPlayersCards(Player player){
+		System.out.println("	Your deck");
 		for(Card card: player.hand){
 			System.out.print("|" + card + "|");
 		}
 		System.out.println();
-		String playerCard = "";
+	}
+	
+	
+	public void handlePlayerTurn(Player player){ 
+		String playerMove;
+		Card selectedCard;
 		do{
-			playerCard = sc.nextLine();
-			if(!handContainsCard(player,playerCard)){
+			playerMove = getPlayerMove(player);
+			selectedCard = getCard(player, playerMove);
+			if(!isMoveLegal(selectedCard)){
+				System.out.print("You can't play that card, try again: ");
+			}
+		}while (!isMoveLegal(selectedCard));
+		updateDeckAndDiscardPile(player, selectedCard);
+		handleActionCard(selectedCard);
+		updateTopOfDiscardPile();
+	}
+	
+	public String getPlayerMove(Player player){
+		String selectedCard = "";
+		do{
+			selectedCard = sc.nextLine();
+			if(!handContainsCard(player,selectedCard)){
 				System.out.println("You do not have that card in your deck");
 			}
-		}while (!handContainsCard(player,playerCard));
-		// check if that card is playable
-		// add that card to discard pile
-		discardPile.addCardToDeck(getCard(player,playerCard));
-		// remove that card from the player hand
-		player.removeCardFromHand(getCard(player,playerCard));
-		// check if it is an action card
-		// it is an action card handle the action
-		
+		}while (!handContainsCard(player,selectedCard));
+		return selectedCard;
+	}
+	
+	public void updateDeckAndDiscardPile(Player player,Card card){
+		discardPile.addCardToDeck(card);
+		player.removeCardFromHand(card);
+	}
+	
+	public void updateTopOfDiscardPile(){
+		turnsPlayed++;
+		topOfDiscardPile = discardPile.getCardFromDeck(turnsPlayed);
 	}
 	
 	public boolean handContainsCard(Player player, String selectedCard){
@@ -88,12 +124,35 @@ public class Uno{
 	}
 	
 	public Card getCard(Player player, String cardName){
-		return player.hand.get(cardname);
 		for(Card card : player.hand){
-			if(card.toString().equalsIgnoreCase(selectedCard)){
+			if(card.toString().equalsIgnoreCase(cardName)){
 				return card;
-			}else {
-				throw new ObjectNotFoundException;
+			}
+		}
+		throw new NullPointerException("card not found");
+	}
+	
+	public void handleActionCard(Card actionCard){
+		
+	}
+	
+	public boolean isMoveLegal(Card card){
+		String color = topOfDiscardPile.getColor();
+		if(card.isWildCard() || topOfDiscardPile.isWildCard()){
+			return true;
+		}else if(card.isActionCard() || topOfDiscardPile.isActionCard()){
+			if(card.getColor().equalsIgnoreCase(color)){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			if(card.getColor().equalsIgnoreCase(color)){
+				return true;
+			}else if(card.getNr() == topOfDiscardPile.getNr()){
+				return true;
+			}else{
+				return false;
 			}
 		}
 	}

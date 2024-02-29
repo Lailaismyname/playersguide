@@ -14,4 +14,20 @@ class Card{
 	public String toString(){
 		return  color + " " + nr;
 	}
+	
+	public boolean isActionCard(){
+		return false;
+	}
+	
+	public boolean isWildCard(){
+		return false;
+	}
+	
+	public String getColor(){
+		return color;
+	}
+	
+	public int getNr(){
+		return nr;
+	}
 }

@@ -21,8 +21,8 @@ class Deck{
 			addActionCards(8, "Draw two");
 			addActionCards(8, "Reverse");
 			addActionCards(8, "Skip");
-			addActionCards(4, "Wild");
-			addActionCards(4, "Wild draw four");
+			addWildCards(4, "Wild");
+			addWildCards(4, "Wild draw four");
 	}
 	
 	
@@ -37,8 +37,22 @@ class Deck{
 	
 	
 	public void addActionCards(int amount, String action){
+		String color = "Blue";
 		for(int i = 0; i < amount; i++){
-			deck.add(new ActionCard(action));
+			if(i > 1 && i < 4){
+				color = "Red"; 
+			}else if(i > 3 && i < 6){
+				color = "Green";
+			}else{
+				color = "Yellow";
+			}
+			deck.add(new ActionCard(action, color));
+		}
+	}
+	
+	public void addWildCards(int amount, String action){
+		for(int i = 0; i < amount; i++){
+			deck.add(new WildCard(action));
 		}
 	}
 	
