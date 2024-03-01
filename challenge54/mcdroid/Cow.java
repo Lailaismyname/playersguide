@@ -1,4 +1,4 @@
-package challeng54.mcdroid;
+package challenge54.mcdroid;
 
-class Cow{
+public class Cow{
 }

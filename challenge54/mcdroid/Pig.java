@@ -1,3 +1,3 @@
-package challeng54.mcdroid;
+package challenge54.mcdroid;
 
-class Pig{}
+public class Pig{}

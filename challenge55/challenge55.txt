@@ -1,0 +1,6 @@
+Use a package for all the code of the chosen challenge (if you haven’t already done so)
+Place each type in its own file. (Small types like enumerations or records can be an exception.)
+	// see challenge 51
+Answer this question: Having used both a single file and multi-file program, (and possibly no package versus an explicitly declared package) which
+do you prefer and why?
+	// no package cause its easier, on a serious note packages because i can imagine in a large project it is just easier to organize things and thus also locate things you need faster. 

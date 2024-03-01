@@ -1,4 +1,4 @@
-package challeng54.ifield;
+package challenge54.ifield;
 
-class Pig{
+public class Pig{
 }
