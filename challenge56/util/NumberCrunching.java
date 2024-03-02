@@ -47,13 +47,17 @@ public class NumberCrunching{
 	// was hier gebleven, TODO deze mag alleen false returnen als het echt false is
 	public Optional<Boolean> getBooleanInput(){
 		System.out.print("Enter Boolean: ");
-		Boolean bool;
-		try{
-			bool = Boolean.parseBoolean(sc.nextLine());
-			return Optional.of(bool);
-		}catch (NumberFormatException err){
-			return Optional.empty();
+		String input = sc.nextLine().toLowerCase();
+		Optional<Boolean> bool = Optional.empty();
+		
+		if(input.equals("true")){
+			bool = Optional.of(true);
+		}else if(input.equals("false")){
+			bool =  Optional.of(false);
+		}else{
+			bool = Optional.empty();
 		}
+		return bool;
 	}
 	
 	public Optional<Boolean> getBooleanValue(){
