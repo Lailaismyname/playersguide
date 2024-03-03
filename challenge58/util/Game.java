@@ -79,5 +79,6 @@ public class Game{
 You could write this program without exceptions, but the requirements
 demanded an exception for learning purposes. If you didn’t have that requirement, would you have
 used an exception? Why or why not?
-I would have used logic because thats what i was told, but also because there is no need for an exception if you are going to reprompt anyway. 
+On second thought, probably better to use a try catch when using parseInt because it will give an exception if you enter anything other then a number
+but avoid using try/catch when you can.
 */
