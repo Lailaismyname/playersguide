@@ -12,7 +12,6 @@ class Main{
 		do{
 			int[] numbers = secondThread.getNumbers();
 			if(hasEnterBeenPressed()){
-				System.out.println(numbers[0] + " " + numbers[1]); // debug
 				if(numbers[0] == numbers[1]){
 					System.out.println("The numbers are the same!");
 					System.exit(0);
