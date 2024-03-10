@@ -1,17 +1,17 @@
-// TODO die executor class uitzoeken, ik snap het niet helemaal
-
 package challenge67;
-import challenge67.util.AsyncRandomWords;
-import challenge67.util.NewThread;
 
+import challenge67.util.AsyncMedal;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 class Main{
 	public static void main(String[] args){
-	NewThread newThread = new NewThread();
-	newThread.start();
-	System.out.println("hello");
-	NewThread anotherThread = new NewThread();
-	anotherThread.start();
-	System.out.println("hello again");
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		AsyncMedal threadOne = new AsyncMedal();
+		AsyncMedal threadTwo = new AsyncMedal();
+		Future<Integer> resultThreadOne = executor.submit(threadOne);
+		Future<Integer> resultThreadTwo = executor.submit(threadTwo);
+		executor.shutdown();
 	}
 }
